@@ -26,32 +26,44 @@ avg_lowest=0
 var_highest=0
 var_lowest=0
 
-print("Connecting to",server)
+print("Connecting",server+"...",end="",flush=True)
 conn=HTTPConnection(server)
 conn.request('GET',url)
+print("connected",flush=True)
 resp=conn.get_response()
-print("Checking if the response is valid")
+print("Checking if the response is valid...",end="",flush=True)
 if resp.status != 200:
-	print("Failed to fetch temperatures from server")
-	quit()
-content=resp.read().decode('utf-8')
-print("Now finding the temperature from the page")
-result=re.findall(re_temp,content,re.S)
-print("Printing the temperature")
+    print("invalid",flush=True)
+    print("OK bye!",flush=True)
+    quit()
+print("valid",flush=True)
 
-print("Today: highest="+result[0][1]+", lowest="+result[0][2])
+print("Fetching page content...",end="",flush=True)
+content=resp.read().decode('utf-8')
+print("done",flush=True)
+
+print("Closing connection...",end="",flush=True)
+conn.close()
+print("done",flush=True)
+
+print("Fetching temperatures from the page...",end="",flush=True)
+result=re.findall(re_temp,content,re.S)
+print("done",flush=True)
+
+print("Today: highest="+result[0][1]+", lowest="+result[0][2],flush=True)
 highest.append(int(result[0][1]))
 lowest.append(int(result[0][2]))
 for elem in result[1:]:
-	print("Day",elem[0]+": highest="+elem[1]+", lowest="+elem[2])
-	highest.append(int(elem[1]))
-	lowest.append(int(elem[2]))
+    print("Day",elem[0]+": highest="+elem[1]+", lowest="+elem[2],flush=True)
+    highest.append(int(elem[1]))
+    lowest.append(int(elem[2]))
 
+print("Calculating average...",end="",flush=True)
 avg_highest=average(highest)
 avg_lowest=average(lowest)
+print("highest="+str(avg_highest)+", lowest="+str(avg_lowest),flush=True)
 
+print("Calculating variance...",end="",flush=True)
 var_highest=variance(highest)
 var_lowest=variance(lowest)
-
-print("Average: highest="+str(avg_highest)+", lowest="+str(avg_lowest))
-print("Variance: highest="+str(var_highest)+", lowest="+str(var_lowest))
+print("highest="+str(var_highest)+", lowest="+str(var_lowest),flush=True)
