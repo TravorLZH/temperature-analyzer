@@ -16,7 +16,7 @@ def variance(array):
 	var/=len(array)
 	return round(var,2)
 
-re_temp=r'<li class="sky skyid.*?">.*?<h1>(\d+).*?<span>(\d+).*?(\d+)'
+re_temp=r'<li class="sky skyid.*?">.*?<h1>(\d+).*?<span>(-?\d+).*?(-?\d+)'
 server='www.weather.com.cn:80'
 url='/weather/101010100.shtml'
 highest=[]
